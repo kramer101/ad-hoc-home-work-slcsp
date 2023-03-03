@@ -1,7 +1,7 @@
 package com.adhoc.homework.slcsp;
 
 /**
- Entry point class
+ Entry point class.
  */
 public class Main {
 
