@@ -9,11 +9,17 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+/**
+ * Mapper for plans data.
+ * */
 @Component
 public class PlansDataMapper {
 
 
-  public Map<StateRateAreaTuple, Set<Double>> toSilverRatesByStateAndRateArea(
+  /**
+   * Map to StateRateAreaTuple and set of rates.
+   * */
+  public Map<StateRateAreaTuple, Set<String>> toSilverRatesByStateAndRateArea(
       final List<PlansDataItem> plansDataItems) {
     return plansDataItems.stream()
         .filter(plansDataItem -> StringUtils
@@ -25,6 +31,6 @@ public class PlansDataMapper {
   private StateRateAreaTuple toTuple(final PlansDataItem item) {
     return StateRateAreaTuple.builder()
         .state(item.getState())
-        .rateArea(item.getRateArea()).build();
+        .rateArea(Integer.parseInt(item.getRateArea())).build();
   }
 }

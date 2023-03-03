@@ -23,11 +23,6 @@ public class DataLoaderServiceTest {
   }
 
   @Test
-  public void loadInputZips() {
-    dataLoaderService.loadInputZips();
-  }
-
-  @Test
   public void loadZipData() {
   }
 

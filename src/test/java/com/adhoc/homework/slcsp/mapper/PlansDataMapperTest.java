@@ -27,18 +27,18 @@ class PlansDataMapperTest {
             PlansDataItem.builder()
                 .metalLevel("Silver")
                 .state("AK")
-                .rate(11.1)
-                .rateArea(1)
+                .rate("11.1")
+                .rateArea("1")
             .build(),
         PlansDataItem.builder()
             .metalLevel("Gold")
             .state("AK")
-            .rate(11.1)
-            .rateArea(1)
+            .rate("11.1")
+            .rateArea("1")
             .build()
     );
 
-    Map<StateRateAreaTuple, Set<Double>> silverRatesByStateAndRateArea =
+    Map<StateRateAreaTuple, Set<String>> silverRatesByStateAndRateArea =
         plansDataMapper.toSilverRatesByStateAndRateArea(inputItems);
 
     Assertions.assertEquals(1, silverRatesByStateAndRateArea.keySet().size());
@@ -51,12 +51,12 @@ class PlansDataMapperTest {
         PlansDataItem.builder()
             .metalLevel("Gold")
             .state("AK")
-            .rate(11.1)
-            .rateArea(1)
+            .rate("11.1")
+            .rateArea("1")
             .build()
     );
 
-    Map<StateRateAreaTuple, Set<Double>> silverRatesByStateAndRateArea =
+    Map<StateRateAreaTuple, Set<String>> silverRatesByStateAndRateArea =
         plansDataMapper.toSilverRatesByStateAndRateArea(inputItems);
 
     Assertions.assertEquals(0, silverRatesByStateAndRateArea.keySet().size());
@@ -75,18 +75,18 @@ class PlansDataMapperTest {
         PlansDataItem.builder()
             .metalLevel("Silver")
             .state("AK")
-            .rate(197.3)
-            .rateArea(1)
+            .rate("197.3")
+            .rateArea("1")
             .build(),
         PlansDataItem.builder()
             .metalLevel("Silver")
             .state("AK")
-            .rate(197.3)
-            .rateArea(1)
+            .rate("197.3")
+            .rateArea("1")
             .build()
     );
 
-    Map<StateRateAreaTuple, Set<Double>> silverRatesByStateAndRateArea =
+    Map<StateRateAreaTuple, Set<String>> silverRatesByStateAndRateArea =
         plansDataMapper.toSilverRatesByStateAndRateArea(inputItems);
 
     Assertions.assertTrue(
@@ -103,41 +103,41 @@ class PlansDataMapperTest {
         PlansDataItem.builder()
             .metalLevel("Silver")
             .state("AK")
-            .rate(197.6)
-            .rateArea(1)
+            .rate("197.6")
+            .rateArea("1")
             .build(),
         PlansDataItem.builder()
             .metalLevel("Silver")
             .state("AK")
-            .rate(197.3)
-            .rateArea(1)
+            .rate("197.3")
+            .rateArea("1")
             .build(),
         PlansDataItem.builder()
             .metalLevel("Silver")
             .state("AK")
-            .rate(197.5)
-            .rateArea(1)
+            .rate("197.5")
+            .rateArea("1")
             .build(),
         PlansDataItem.builder()
             .metalLevel("Silver")
             .state("AK")
-            .rate(197.4)
-            .rateArea(1)
+            .rate("197.4")
+            .rateArea("1")
             .build()
     );
 
     double expected = 197.4;
-    Map<StateRateAreaTuple, Set<Double>> silverRatesByStateAndRateArea =
+    Map<StateRateAreaTuple, Set<String>> silverRatesByStateAndRateArea =
         plansDataMapper.toSilverRatesByStateAndRateArea(inputItems);
 
     StateRateAreaTuple key = StateRateAreaTuple.builder().state("AK").rateArea(1).build();
-    Set<Double> value = silverRatesByStateAndRateArea.get(key);
+    Set<String> value = silverRatesByStateAndRateArea.get(key);
 
-    Iterator<Double> iterator = value.iterator();
+    Iterator<String> iterator = value.iterator();
 
     for (int i = 0; i < value.size(); i++) {
-      Double rate = iterator.next();
-      if (i == 1 && rate != expected) {
+      String rate = iterator.next();
+      if (i == 1 && Double.parseDouble(rate) != expected) {
         Assertions.fail("Actual value " + rate);
       }
     }

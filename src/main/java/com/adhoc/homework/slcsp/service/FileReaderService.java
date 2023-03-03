@@ -8,11 +8,15 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.StreamSupport;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,13 +25,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class FileReaderService {
 
-  private final DirectoryStream<Path> dataDirectoryStream;
+  @Value("target/classes/data")
+  private FileSystemResource dataFolderResource;
+
   private final CsvMapper csvMapper;
 
 
   @Autowired
-  public FileReaderService(DirectoryStream<Path> dataDirectoryStream, CsvMapper csvMapper) {
-    this.dataDirectoryStream = dataDirectoryStream;
+  public FileReaderService(CsvMapper csvMapper) {
     this.csvMapper = csvMapper;
   }
 
@@ -47,8 +52,6 @@ public class FileReaderService {
     }
 
   }
-
-
 
   public List<ZipsDataItem> readZipsDataFile() {
     try {
@@ -82,19 +85,30 @@ public class FileReaderService {
 
 
   private <T>  List<T> getFileLines(final List<Path> files, Class<T> clazz) throws IOException {
-    ObjectReader objectReader = csvMapper.readerWithTypedSchemaFor(clazz);
+
+    ObjectReader objectReader =  csvMapper.readerWithTypedSchemaFor(clazz);
+
     try (MappingIterator<T> objectMappingIterator =
              objectReader.readValues(files.get(0).toFile())) {
-      return objectMappingIterator.readAll();
+
+      List<T> lines = objectMappingIterator.readAll();
+      lines.remove(0);
+      return lines;
     }
   }
 
 
-  private List<Path> findFile(final String fileName) {
-    return StreamSupport.stream(dataDirectoryStream.spliterator(), false)
-        .filter(path -> path.toFile().exists()
-            && path.toFile().getName().equals(fileName))
-        .toList();
+  private List<Path> findFile(final String fileName) throws IOException {
+
+    try (DirectoryStream<Path> directoryStream =
+             Files.newDirectoryStream(Paths.get(dataFolderResource.getURI()))) {
+
+      return StreamSupport.stream(directoryStream.spliterator(), false)
+          .filter(path -> path.toFile().exists()
+              && path.toFile().getName().equals(fileName))
+          .toList();
+    }
+
   }
 
 }

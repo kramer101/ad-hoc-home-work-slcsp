@@ -20,6 +20,6 @@ public class PlansDataItem {
   private String planId;
   private String state;
   private String metalLevel;
-  private Double rate;
-  private Integer rateArea;
+  private String rate;
+  private String rateArea;
 }
