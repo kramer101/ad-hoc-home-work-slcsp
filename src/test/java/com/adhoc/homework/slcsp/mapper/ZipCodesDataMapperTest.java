@@ -1,7 +1,7 @@
 package com.adhoc.homework.slcsp.mapper;
 
 import com.adhoc.homework.slcsp.service.StateRateAreaTuple;
-import com.adhoc.homework.slcsp.service.resource.ZipsDataItem;
+import com.adhoc.homework.slcsp.mapper.resource.ZipsDataItem;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

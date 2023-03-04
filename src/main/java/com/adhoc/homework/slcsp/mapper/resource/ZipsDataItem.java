@@ -1,4 +1,4 @@
-package com.adhoc.homework.slcsp.service.resource;
+package com.adhoc.homework.slcsp.mapper.resource;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

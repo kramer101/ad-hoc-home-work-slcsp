@@ -1,8 +1,8 @@
 package com.adhoc.homework.slcsp.service;
 
-import com.adhoc.homework.slcsp.service.resource.PlansDataItem;
-import com.adhoc.homework.slcsp.service.resource.SlcspInputFileItem;
-import com.adhoc.homework.slcsp.service.resource.ZipsDataItem;
+import com.adhoc.homework.slcsp.mapper.resource.PlansDataItem;
+import com.adhoc.homework.slcsp.mapper.resource.SlcspInputFileItem;
+import com.adhoc.homework.slcsp.mapper.resource.ZipsDataItem;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -11,7 +11,9 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Service responsible for reading data from files.
- * */
+ */
 @Service
 public class FileReaderService {
 
@@ -37,8 +39,8 @@ public class FileReaderService {
   }
 
   /**
-   * Read contents of slcsp.csv.
-   * */
+   * Read contents of slcsp.csv keeping lines in the provided order.
+   */
   public List<SlcspInputFileItem> readSlcspInputFile() {
 
     try {
@@ -46,7 +48,21 @@ public class FileReaderService {
       List<Path> files = findFile("slcsp.csv");
       assertFileFound(files);
 
-      return getFileLines(files, SlcspInputFileItem.class);
+      List<SlcspInputFileItem> inputFileDataItems = new LinkedList<>();
+
+      try (Stream<String> lines = Files.lines(files.get(0))) {
+        lines.forEachOrdered(line -> {
+          inputFileDataItems.add(
+              SlcspInputFileItem.builder()
+                  .zipcode(line.split(",")[0])
+                  .build()
+          );
+        });
+      }
+
+      inputFileDataItems.remove(0); //removing header
+      return inputFileDataItems;
+
     } catch (Exception e) {
       throw new RuntimeException("Error while reading data from slcsp.csv", e);
     }
@@ -84,15 +100,15 @@ public class FileReaderService {
   }
 
 
-  private <T>  List<T> getFileLines(final List<Path> files, Class<T> clazz) throws IOException {
+  private <T> List<T> getFileLines(final List<Path> files, Class<T> clazz) throws IOException {
 
-    ObjectReader objectReader =  csvMapper.readerWithTypedSchemaFor(clazz);
+    ObjectReader objectReader = csvMapper.readerWithTypedSchemaFor(clazz);
 
     try (MappingIterator<T> objectMappingIterator =
              objectReader.readValues(files.get(0).toFile())) {
-
       List<T> lines = objectMappingIterator.readAll();
-      lines.remove(0);
+
+      lines.remove(0); //removing header
       return lines;
     }
   }

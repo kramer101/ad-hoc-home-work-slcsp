@@ -2,9 +2,9 @@ package com.adhoc.homework.slcsp.service;
 
 import com.adhoc.homework.slcsp.mapper.PlansDataMapper;
 import com.adhoc.homework.slcsp.mapper.ZipCodesDataMapper;
-import com.adhoc.homework.slcsp.service.resource.PlansDataItem;
-import com.adhoc.homework.slcsp.service.resource.SlcspInputFileItem;
-import com.adhoc.homework.slcsp.service.resource.ZipsDataItem;
+import com.adhoc.homework.slcsp.mapper.resource.PlansDataItem;
+import com.adhoc.homework.slcsp.mapper.resource.SlcspInputFileItem;
+import com.adhoc.homework.slcsp.mapper.resource.ZipsDataItem;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class DataLoaderService {
   }
 
 
-  public Map<Integer, List<StateRateAreaTuple>> loadZipData() {
+  public Map<Integer, Set<StateRateAreaTuple>> loadZipData() {
     List<ZipsDataItem> zipsDataItems = fileReaderService.readZipsDataFile();
     Set<Integer> zipsInScope = loadInputZips();
     return zipCodesDataMapper.toZipCodeByStateAndAreaInScope(zipsDataItems, zipsInScope);
@@ -45,6 +45,7 @@ public class DataLoaderService {
 
 
   public Set<Integer> loadInputZips() {
+
 
     List<SlcspInputFileItem> slcspInputFileItems = fileReaderService.readSlcspInputFile();
     Set<Integer> result = new LinkedHashSet<>();
