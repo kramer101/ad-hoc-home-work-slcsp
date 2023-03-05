@@ -1,6 +1,6 @@
 package com.adhoc.homework.slcsp.mapper;
 
-import com.adhoc.homework.slcsp.service.StateRateAreaTuple;
+import com.adhoc.homework.slcsp.mapper.resource.StateRateAreaTuple;
 import com.adhoc.homework.slcsp.mapper.resource.PlansDataItem;
 import java.util.List;
 import java.util.Map;

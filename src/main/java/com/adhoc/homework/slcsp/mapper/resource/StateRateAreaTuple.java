@@ -1,4 +1,4 @@
-package com.adhoc.homework.slcsp.service;
+package com.adhoc.homework.slcsp.mapper.resource;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

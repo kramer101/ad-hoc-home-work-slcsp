@@ -1,6 +1,6 @@
 package com.adhoc.homework.slcsp.mapper;
 
-import com.adhoc.homework.slcsp.service.StateRateAreaTuple;
+import com.adhoc.homework.slcsp.mapper.resource.StateRateAreaTuple;
 import com.adhoc.homework.slcsp.mapper.resource.ZipsDataItem;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +34,7 @@ class ZipCodesDataMapperTest {
         ZipsDataItem.builder().zipcode("222222").build()
     );
 
-    Map<Integer, List<StateRateAreaTuple>> zipCodeByStateAndAreaInScope =
+    Map<Integer, Set<StateRateAreaTuple>> zipCodeByStateAndAreaInScope =
         zipCodesDataMapper.toZipCodeByStateAndAreaInScope(zipsDataItems, zipCodesInScope);
 
     Assertions.assertEquals(1, zipCodeByStateAndAreaInScope.keySet().size());
@@ -53,7 +53,7 @@ class ZipCodesDataMapperTest {
         ZipsDataItem.builder().zipcode("111111").state("AR").rateArea("1").build()
     );
 
-    Map<Integer, List<StateRateAreaTuple>> zipCodeByStateAndAreaInScope =
+    Map<Integer, Set<StateRateAreaTuple>> zipCodeByStateAndAreaInScope =
         zipCodesDataMapper.toZipCodeByStateAndAreaInScope(zipsDataItems, zipCodesInScope);
 
     Assertions.assertEquals(1, zipCodeByStateAndAreaInScope.keySet().size());

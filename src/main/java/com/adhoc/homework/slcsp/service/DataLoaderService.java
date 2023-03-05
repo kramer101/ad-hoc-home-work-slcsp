@@ -4,6 +4,7 @@ import com.adhoc.homework.slcsp.mapper.PlansDataMapper;
 import com.adhoc.homework.slcsp.mapper.ZipCodesDataMapper;
 import com.adhoc.homework.slcsp.mapper.resource.PlansDataItem;
 import com.adhoc.homework.slcsp.mapper.resource.SlcspInputFileItem;
+import com.adhoc.homework.slcsp.mapper.resource.StateRateAreaTuple;
 import com.adhoc.homework.slcsp.mapper.resource.ZipsDataItem;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -45,7 +46,6 @@ public class DataLoaderService {
 
 
   public Set<Integer> loadInputZips() {
-
 
     List<SlcspInputFileItem> slcspInputFileItems = fileReaderService.readSlcspInputFile();
     Set<Integer> result = new LinkedHashSet<>();
