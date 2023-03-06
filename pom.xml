@@ -21,7 +21,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -63,13 +67,6 @@
             <artifactId>commons-csv</artifactId>
             <version>1.10.0</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.9.2</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
@@ -91,6 +88,10 @@
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
