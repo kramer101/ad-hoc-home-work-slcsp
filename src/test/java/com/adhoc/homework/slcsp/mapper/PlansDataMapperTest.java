@@ -1,25 +1,31 @@
 package com.adhoc.homework.slcsp.mapper;
 
-import com.adhoc.homework.slcsp.mapper.resource.StateRateAreaTuple;
 import com.adhoc.homework.slcsp.mapper.resource.PlansDataItem;
+import com.adhoc.homework.slcsp.mapper.resource.StateRateAreaTuple;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.assertj.core.util.Lists;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.event.annotation.BeforeTestMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
-class PlansDataMapperTest {
+public class PlansDataMapperTest {
 
-  @Autowired
+  @InjectMocks
   private PlansDataMapper plansDataMapper;
+
+  @BeforeTestMethod
+  public void initMocks(){
+    MockitoAnnotations.initMocks(this);
+  }
+
 
   @Test
   public void should_Return_only_Silver() {
@@ -38,7 +44,7 @@ class PlansDataMapperTest {
             .build()
     );
 
-    Map<StateRateAreaTuple, Set<String>> silverRatesByStateAndRateArea =
+    Map<StateRateAreaTuple, Set<Double>> silverRatesByStateAndRateArea =
         plansDataMapper.toSilverRatesByStateAndRateArea(inputItems);
 
     Assertions.assertEquals(1, silverRatesByStateAndRateArea.keySet().size());
@@ -56,7 +62,7 @@ class PlansDataMapperTest {
             .build()
     );
 
-    Map<StateRateAreaTuple, Set<String>> silverRatesByStateAndRateArea =
+    Map<StateRateAreaTuple, Set<Double>> silverRatesByStateAndRateArea =
         plansDataMapper.toSilverRatesByStateAndRateArea(inputItems);
 
     Assertions.assertEquals(0, silverRatesByStateAndRateArea.keySet().size());
@@ -86,7 +92,7 @@ class PlansDataMapperTest {
             .build()
     );
 
-    Map<StateRateAreaTuple, Set<String>> silverRatesByStateAndRateArea =
+    Map<StateRateAreaTuple, Set<Double>> silverRatesByStateAndRateArea =
         plansDataMapper.toSilverRatesByStateAndRateArea(inputItems);
 
     Assertions.assertTrue(
@@ -127,17 +133,17 @@ class PlansDataMapperTest {
     );
 
     double expected = 197.4;
-    Map<StateRateAreaTuple, Set<String>> silverRatesByStateAndRateArea =
+    Map<StateRateAreaTuple, Set<Double>> silverRatesByStateAndRateArea =
         plansDataMapper.toSilverRatesByStateAndRateArea(inputItems);
 
     StateRateAreaTuple key = StateRateAreaTuple.builder().state("AK").rateArea(1).build();
-    Set<String> value = silverRatesByStateAndRateArea.get(key);
+    Set<Double> value = silverRatesByStateAndRateArea.get(key);
 
-    Iterator<String> iterator = value.iterator();
+    Iterator<Double> iterator = value.iterator();
 
     for (int i = 0; i < value.size(); i++) {
-      String rate = iterator.next();
-      if (i == 1 && Double.parseDouble(rate) != expected) {
+      Double rate = iterator.next();
+      if (i == 1 && !rate.equals(expected)) {
         Assertions.fail("Actual value " + rate);
       }
     }

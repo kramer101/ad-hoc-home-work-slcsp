@@ -40,6 +40,8 @@ public class FileReaderService {
 
   /**
    * Read contents of slcsp.csv keeping lines in the provided order.
+   *
+   * @return input data from the csv file
    */
   public List<SlcspInputFileItem> readSlcspInputFile() {
 
@@ -50,14 +52,14 @@ public class FileReaderService {
 
       List<SlcspInputFileItem> inputFileDataItems = new LinkedList<>();
 
+      //not relying on the Jackson reader in this case in order
+      //to have a better control over the order of items in the file
       try (Stream<String> lines = Files.lines(files.get(0))) {
-        lines.forEachOrdered(line -> {
-          inputFileDataItems.add(
-              SlcspInputFileItem.builder()
-                  .zipcode(line.split(",")[0])
-                  .build()
-          );
-        });
+        lines.forEachOrdered(line -> inputFileDataItems.add(
+            SlcspInputFileItem.builder()
+                .zipcode(line.split(",")[0])
+                .build()
+        ));
       }
 
       inputFileDataItems.remove(0); //removing header
@@ -66,9 +68,13 @@ public class FileReaderService {
     } catch (Exception e) {
       throw new RuntimeException("Error while reading data from slcsp.csv", e);
     }
-
   }
 
+  /**
+   * Reading zip codes data from the csv file.
+   *
+   * @return data from the csv file
+   */
   public List<ZipsDataItem> readZipsDataFile() {
     try {
       List<Path> files = findFile("zips.csv");
@@ -81,6 +87,11 @@ public class FileReaderService {
 
   }
 
+  /**
+   * Reading plans data from the csv file.
+   *
+   * @return  plans data from the csv file
+   * */
   public List<PlansDataItem> readPlansDataFile() {
     try {
       List<Path> files = findFile("plans.csv");

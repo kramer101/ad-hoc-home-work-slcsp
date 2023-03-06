@@ -6,47 +6,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.assertj.core.util.Lists;
-import org.assertj.core.util.Sets;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.event.annotation.BeforeTestMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
-class ZipCodesDataMapperTest {
+public class ZipCodesDataMapperTest {
 
-  @Autowired
+  @InjectMocks
   private ZipCodesDataMapper zipCodesDataMapper;
 
-
-  @Test
-  public void should_not_return_zipcodes_not_in_scope() {
-
-    Set<Integer> zipCodesInScope = Sets.set(
-        111111
-    );
-
-    List<ZipsDataItem> zipsDataItems = Lists.list(
-        ZipsDataItem.builder().zipcode("111111").build(),
-        ZipsDataItem.builder().zipcode("222222").build()
-    );
-
-    Map<Integer, Set<StateRateAreaTuple>> zipCodeByStateAndAreaInScope =
-        zipCodesDataMapper.toZipCodeByStateAndAreaInScope(zipsDataItems, zipCodesInScope);
-
-    Assertions.assertEquals(1, zipCodeByStateAndAreaInScope.keySet().size());
+  @BeforeTestMethod
+  public void initMocks(){
+    MockitoAnnotations.initMocks(this);
   }
 
 
   @Test
   public void should_not_contain_duplicate_zipcodes() {
-
-    Set<Integer> zipCodesInScope = Sets.set(
-        111111
-    );
 
     List<ZipsDataItem> zipsDataItems = Lists.list(
         ZipsDataItem.builder().zipcode("111111").state("AR").rateArea("1").build(),
@@ -54,7 +35,7 @@ class ZipCodesDataMapperTest {
     );
 
     Map<Integer, Set<StateRateAreaTuple>> zipCodeByStateAndAreaInScope =
-        zipCodesDataMapper.toZipCodeByStateAndAreaInScope(zipsDataItems, zipCodesInScope);
+        zipCodesDataMapper.toZipCodeByStateAndArea(zipsDataItems);
 
     Assertions.assertEquals(1, zipCodeByStateAndAreaInScope.keySet().size());
   }

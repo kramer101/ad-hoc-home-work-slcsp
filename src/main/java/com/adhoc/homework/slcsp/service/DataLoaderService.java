@@ -10,12 +10,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
-Service responsible for loading data.
-*/
+ * Service responsible for loading data.
+ */
 @Service
 public class DataLoaderService {
 
@@ -23,6 +24,9 @@ public class DataLoaderService {
   private final ZipCodesDataMapper zipCodesDataMapper;
   private final PlansDataMapper plansDataMapper;
 
+  /**
+   * Constructor with Spring's Autowire.
+   */
   @Autowired
   public DataLoaderService(FileReaderService fileReaderService,
                            ZipCodesDataMapper zipCodesDataMapper, PlansDataMapper plansDataMapper) {
@@ -32,22 +36,39 @@ public class DataLoaderService {
   }
 
 
+  /**
+   * Load and map zip codes data.
+   *
+   * @return mapped objects for the zip codes in scope (as defined by the input file)
+   */
   public Map<Integer, Set<StateRateAreaTuple>> loadZipData() {
     List<ZipsDataItem> zipsDataItems = fileReaderService.readZipsDataFile();
+
+    Map<Integer, Set<StateRateAreaTuple>> zipCodeByStateAndArea =
+        zipCodesDataMapper.toZipCodeByStateAndArea(zipsDataItems);
+
     Set<Integer> zipsInScope = loadInputZips();
-    return zipCodesDataMapper.toZipCodeByStateAndAreaInScope(zipsDataItems, zipsInScope);
+    zipCodeByStateAndArea.keySet().retainAll(zipsInScope);
+    return zipCodeByStateAndArea;
   }
 
-
-  public Map<StateRateAreaTuple, Set<String>> loadPlanData() {
+  public Map<StateRateAreaTuple, Set<Double>> loadPlanData() {
     List<PlansDataItem> plansDataItems = fileReaderService.readPlansDataFile();
     return plansDataMapper.toSilverRatesByStateAndRateArea(plansDataItems);
   }
 
-
+  /**
+   * Load and map the input zip codes.
+   * TODO: move the mapping logic to a separate mapper
+   *
+   * @return valid (numerical) zip codes objects mapped as Integer
+   */
   public Set<Integer> loadInputZips() {
 
-    List<SlcspInputFileItem> slcspInputFileItems = fileReaderService.readSlcspInputFile();
+    List<SlcspInputFileItem> slcspInputFileItems =
+        fileReaderService.readSlcspInputFile().stream()
+            .filter(slcspInputFileItem -> NumberUtils.isCreatable(slcspInputFileItem.getZipcode()))
+            .toList();
     Set<Integer> result = new LinkedHashSet<>();
 
     for (SlcspInputFileItem slcspInputFileItem : slcspInputFileItems) {

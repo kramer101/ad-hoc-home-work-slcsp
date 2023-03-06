@@ -46,7 +46,7 @@ public class SlcspResolver {
     Later, this will be used as a lookup by STATE+RATE_AREA to find any
     matching ZIP in zips.csv
     */
-    Map<StateRateAreaTuple, Set<String>> plansData = dataLoaderService.loadPlanData();
+    Map<StateRateAreaTuple, Set<Double>> plansData = dataLoaderService.loadPlanData();
 
     //read the zips.csv data
     Map<Integer, Set<StateRateAreaTuple>> zipCodesData = dataLoaderService.loadZipData();
@@ -61,7 +61,7 @@ public class SlcspResolver {
     return results;
   }
 
-  private SlcspResult getResultForZipCode(Map<StateRateAreaTuple, Set<String>> plansData,
+  private SlcspResult getResultForZipCode(Map<StateRateAreaTuple, Set<Double>> plansData,
                                           Map<Integer, Set<StateRateAreaTuple>> zipCodesDataWithTuples,
                                           Iterator<Integer> zipCodesInScopeIterator) {
     String rate = "";
@@ -79,11 +79,10 @@ public class SlcspResolver {
 
       logger.info("Matching key for zip code {}: {}", zipCodeFromInput, matchingKeyTuplesForThisZipCode);
       matchingKeyTuplesForThisZipCode.forEach(stateRateAreaTuple -> {
-        Set<String> plans = plansData.get(stateRateAreaTuple);
+        Set<Double> plans = plansData.get(stateRateAreaTuple);
         if (Objects.nonNull(plans)) {
           //found plans by tulip (state+rate area)
-          plans.forEach(rateAsStringFromCsv ->
-              ratesForZip.add(Double.parseDouble(rateAsStringFromCsv))); //extract the rate amount
+          ratesForZip.addAll(plans); //extract the rate amount
         }
       });
     }

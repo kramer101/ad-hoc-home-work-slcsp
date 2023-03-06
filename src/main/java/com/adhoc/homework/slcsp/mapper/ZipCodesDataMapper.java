@@ -15,16 +15,12 @@ import org.springframework.stereotype.Component;
 public class ZipCodesDataMapper {
 
 
-  public Map<Integer, Set<StateRateAreaTuple>> toZipCodeByStateAndAreaInScope(
-      final List<ZipsDataItem> zipsDataItems, final Set<Integer> zipCodesInScope) {
+  public Map<Integer, Set<StateRateAreaTuple>> toZipCodeByStateAndArea(
+      final List<ZipsDataItem> zipsDataItems) {
 
-    Map<Integer, Set<StateRateAreaTuple>> resultMap = zipsDataItems.stream()
+    return zipsDataItems.stream()
         .collect(Collectors.groupingBy(zipsDataItem -> Integer.parseInt(zipsDataItem.getZipcode()),
             Collectors.mapping(this::toTuple, Collectors.toSet())));
-
-    resultMap.keySet().retainAll(zipCodesInScope);
-
-    return resultMap;
   }
 
 
