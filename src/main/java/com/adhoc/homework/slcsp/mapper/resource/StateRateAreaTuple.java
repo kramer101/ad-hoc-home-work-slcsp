@@ -10,6 +10,7 @@ import lombok.ToString;
 @Builder
 @EqualsAndHashCode
 @ToString
+//TODO: implement using Java 'record'
 public class StateRateAreaTuple {
 
   private String state;

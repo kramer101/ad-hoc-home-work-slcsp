@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonPropertyOrder({"plan_id", "state", "metal_level", "rate", "rate_area"})
+//TODO: implement using Java 'record'
 public class PlansDataItem {
 
   @JsonProperty("plan_id")

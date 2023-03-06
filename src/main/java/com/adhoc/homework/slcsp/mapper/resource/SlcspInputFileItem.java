@@ -17,6 +17,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @JsonPropertyOrder({ "zipcode", "rate"})
 @ToString
+//TODO: implement using Java 'record'
 public class SlcspInputFileItem {
 
   @JsonProperty("zipcode")

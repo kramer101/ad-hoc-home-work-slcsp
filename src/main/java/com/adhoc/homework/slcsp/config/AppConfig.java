@@ -18,6 +18,11 @@ public class AppConfig {
     return CsvMapper.builder().build();
   }
 
+  /**
+   * Builds the output number formatter.
+   *
+   * @return output number formatter
+   */
   @Bean
   public NumberFormat outputRateFormat() {
     NumberFormat numberFormat = new DecimalFormat("#.##");

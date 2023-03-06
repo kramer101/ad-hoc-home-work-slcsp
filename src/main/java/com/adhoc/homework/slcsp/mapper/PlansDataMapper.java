@@ -1,7 +1,7 @@
 package com.adhoc.homework.slcsp.mapper;
 
-import com.adhoc.homework.slcsp.mapper.resource.StateRateAreaTuple;
 import com.adhoc.homework.slcsp.mapper.resource.PlansDataItem;
+import com.adhoc.homework.slcsp.mapper.resource.StateRateAreaTuple;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,6 +20,7 @@ public class PlansDataMapper {
   /**
    * Map StateRateAreaTuple to a set of rates.
    * Rates with invalid non-numeric values will be filtered out.
+   * TODO: move the 'Silver' filtering to  the Service layer
    * */
   public Map<StateRateAreaTuple, Set<Double>> toSilverRatesByStateAndRateArea(
       final List<PlansDataItem> plansDataItems) {

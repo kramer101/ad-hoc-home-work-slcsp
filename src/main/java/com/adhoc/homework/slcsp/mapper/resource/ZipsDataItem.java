@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonPropertyOrder({"zipcode", "state", "county_code", "name", "rate_area"})
+//TODO: implement using Java 'record'
 public class ZipsDataItem {
 
   @JsonProperty("zipcode")
