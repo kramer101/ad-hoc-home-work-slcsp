@@ -74,8 +74,8 @@ I'm using Java to implement this homework assignment as a choice of Programming 
 
 The Spring Boot framework with `CommandLineRunner` is used to support the execution of the application.
 
-I deliberately did not go the route of building the Data Layer for the sake of time and simplicity. 
-Instead, I'm simply loading the data into hash maps and collections to perform the lookup operations.
+I deliberately did not go the route of building the Data Layer and a DB for the sake of time and simplicity. 
+Instead, I'm simply loading the data from the csv files into hash maps and collections to perform the lookup operations.
 
 #### The `SlcspResolver` class
 All the orchestrating logic is located in the `SlcspResolver` class. 
@@ -94,4 +94,5 @@ Classes that are responsible for holding data.
 #### Spring Boot Application
 `SlcspApplication` is the Spring Boot Application class
 
-`Main` is the command line implementation class that is called by Spring Boot.
+`Main` is the command line implementation class that is called by Spring Boot and the `run` method is an entry point.
+It calls `SlcspApplication`, obtains the results and prints them out into `stdout`.
