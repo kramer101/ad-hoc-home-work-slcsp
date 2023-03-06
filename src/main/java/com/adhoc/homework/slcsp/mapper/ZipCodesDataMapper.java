@@ -15,6 +15,13 @@ import org.springframework.stereotype.Component;
 public class ZipCodesDataMapper {
 
 
+  /**
+   * Map zip codes to rate area data items.
+   *
+   * @param zipsDataItems zip code data items
+   *
+   * @return zip code to rate area map.
+   */
   public Map<Integer, Set<StateRateAreaTuple>> toZipCodeByStateAndArea(
       final List<ZipsDataItem> zipsDataItems) {
 
