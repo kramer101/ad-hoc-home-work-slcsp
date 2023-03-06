@@ -3,6 +3,7 @@ package com.adhoc.homework.slcsp;
 import com.adhoc.homework.slcsp.mapper.resource.SlcspResult;
 import com.adhoc.homework.slcsp.mapper.resource.StateRateAreaTuple;
 import com.adhoc.homework.slcsp.service.DataLoaderService;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -26,10 +27,12 @@ public class SlcspResolver {
   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
   private final DataLoaderService dataLoaderService;
+  private final NumberFormat outputRateFormat;
 
   @Autowired
-  public SlcspResolver(DataLoaderService dataLoaderService) {
+  public SlcspResolver(DataLoaderService dataLoaderService, NumberFormat outputRateFormat) {
     this.dataLoaderService = dataLoaderService;
+    this.outputRateFormat = outputRateFormat;
   }
 
   /**
@@ -87,10 +90,11 @@ public class SlcspResolver {
       });
     }
 
-    List<Double> ratesForZipAsList = new ArrayList<>(ratesForZip); //for ease of getting index(1)
+    List<Double> ratesForZipAsList = new ArrayList<>(ratesForZip);
+    //creating an array list for the ease of getting index(1)
     logger.info("Rates for zip code {}: {}", zipCodeFromInput, ratesForZipAsList);
     if (ratesForZipAsList.size() > 1) {
-      rate = ratesForZipAsList.get(1).toString();
+      rate = outputRateFormat.format(ratesForZipAsList.get(1)); //second item in the ordered list
     }
     return new SlcspResult(zipCodeFromInput, rate);
   }

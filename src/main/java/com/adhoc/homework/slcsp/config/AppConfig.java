@@ -1,6 +1,8 @@
 package com.adhoc.homework.slcsp.config;
 
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,5 +16,13 @@ public class AppConfig {
   @Bean
   public CsvMapper csvMapper() {
     return CsvMapper.builder().build();
+  }
+
+  @Bean
+  public NumberFormat outputRateFormat() {
+    NumberFormat numberFormat = new DecimalFormat("#.##");
+    numberFormat.setMinimumFractionDigits(2);
+    numberFormat.setMaximumFractionDigits(2);
+    return numberFormat;
   }
 }

@@ -33,3 +33,7 @@ lines
 * Input data file may not be specified as an input parameter. <br/>Instead, input data will be read from the <code>./target/classes/data/slcsp.csv</code> file
 * Using Lombok for POJO auto generation because I haven't used the Java 14 "record" yet, so staying on a safe side
 
+
+## Approach to solution
+
+
