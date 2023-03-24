@@ -1,3 +1,5 @@
+A possible solution to AdHoc's "slcsp" problem (https://homework.adhoc.team/slcsp/).
+
 ## Requirements
 In order to run the homework, the following is required to be installed on the machine where code is executed:
 
